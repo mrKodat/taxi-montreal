@@ -123,9 +123,9 @@ class _LatestPageState extends State<LatestPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
-                                _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
-                                 _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
+                                _container("1.png", "BOOOK NOWS", (){ }),
+                                _container("2.png", "SEND TEXT MESSAGE", (){ }),
+                                 _container("3.png", "WATCH LIVE FLIGHTS", (){ }),
                               ],
                             ),
                             const SizedBox(
@@ -134,9 +134,9 @@ class _LatestPageState extends State<LatestPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
-                                 _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
-                                _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
+                                _container("4.png", "SEND MY LOCATION", (){ }),
+                                 _container("5.png", "SEE LOCATION OF LIMO", (){ }),
+                                _container("6.png", "SEND US AN EMAIL", (){ }),
                               ],
                             ),
                             const SizedBox(
@@ -145,9 +145,9 @@ class _LatestPageState extends State<LatestPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                 _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
-                                 _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
-                                 _container(SvgPicture.asset("1.svg"), Text("data"), (){ }),
+                                 _container("7.png", "GOTO WEBSITE", (){ }),
+                                 _container("8.png", "TIME ZONES IN USA", (){ }),
+                                 _container("9.png", "NEWS AND ANNOUNCEMENTS", (){ }),
                               ],
                             )
                           ],
@@ -172,18 +172,23 @@ class _LatestPageState extends State<LatestPage> {
     );
   }
 
-  Widget _container(SvgPicture icon, Text text, Function onTap) {
+  Widget _container(icon, text, Function onTap) {
     return InkWell(
       onTap: () => onTap,
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
         height: 110,
         width: 110,
         decoration: BoxDecoration(
-          color: Color.fromARGB(255, 250, 230, 230),
+          color:Color.fromARGB(255, 250, 230, 230),
           borderRadius: BorderRadius.all(Radius.circular(20)),
         ),
-        child: 
-SvgPicture.asset("assets/icon/1.svg", 
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(text, maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, 
+          style: TextStyle(fontFamily: , fontSize: 14, fontWeight: FontWeight.bold),), Image.asset("assets/icon/" +icon, scale: 2.7,)],
+
  ),
 
         
