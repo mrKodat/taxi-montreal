@@ -187,7 +187,7 @@ class _LatestPageState extends State<LatestPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [Text(text, maxLines: 2, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center, 
-          style: TextStyle(fontFamily: , fontSize: 14, fontWeight: FontWeight.bold),), Image.asset("assets/icon/" +icon, scale: 2.7,)],
+          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),), Image.asset("assets/icon/" +icon, scale: 2.7,)],
 
  ),
 
