@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:taxi/Animation/FadeAnimation.dart';
+import 'package:taxi/ui/booking_page.dart';
+import 'package:taxi/ui/flighy_page.dart';
+import 'package:taxi/ui/message_page.dart';
+import 'package:taxi/ui/see_location_page.dart';
+import 'package:taxi/ui/send_location_page.dart';
+import 'package:taxi/ui/send_mail_page.dart';
+import 'package:taxi/ui/time_page.dart';
 
 class LatestPage extends StatefulWidget {
   const LatestPage({super.key});
@@ -123,9 +130,9 @@ class _LatestPageState extends State<LatestPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _container("1.png", "BOOOK NOWS", (){ }),
-                                _container("2.png", "SEND TEXT MESSAGE", (){ }),
-                                 _container("3.png", "WATCH LIVE FLIGHTS", (){ }),
+                                _container("1.png", "BOOOK NOWS", const BookingPage()),
+                                _container("2.png", "SEND TEXT MESSAGE", const MessagePage()),
+                                 _container("3.png", "WATCH LIVE FLIGHTS", const FlightPage()),
                               ],
                             ),
                             const SizedBox(
@@ -134,9 +141,9 @@ class _LatestPageState extends State<LatestPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _container("4.png", "SEND MY LOCATION", (){ }),
-                                 _container("5.png", "SEE LOCATION OF LIMO", (){ }),
-                                _container("6.png", "SEND US AN EMAIL", (){ }),
+                                _container("4.png", "SEND MY LOCATION", const SendLoactionPage()),
+                                 _container("5.png", "SEE LOCATION OF LIMO", const SeeLocationPage()),
+                                _container("6.png", "SEND US AN EMAIL", const SendMailPage()),
                               ],
                             ),
                             const SizedBox(
@@ -145,8 +152,8 @@ class _LatestPageState extends State<LatestPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                 _container("7.png", "GOTO WEBSITE", (){ }),
-                                 _container("8.png", "TIME ZONES IN USA", (){ }),
+                                 _container("7.png", "GOTO WEBSITE", {}),
+                                 _container("8.png", "TIME ZONES IN USA", const TimePage()),
                                  _container("9.png", "NEWS AND ANNOUNCEMENTS", (){ }),
                               ],
                             )
@@ -172,9 +179,12 @@ class _LatestPageState extends State<LatestPage> {
     );
   }
 
-  Widget _container(icon, text, Function onTap) {
+  Widget _container(icon, text, dynamic page) {
     return InkWell(
-      onTap: () => onTap,
+      onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => page),
+              ),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
         height: 110,
