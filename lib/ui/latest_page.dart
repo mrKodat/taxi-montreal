@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:taxi/Animation/FadeAnimation.dart';
 import 'package:taxi/ui/booking_page.dart';
 import 'package:taxi/ui/flighy_page.dart';
@@ -8,6 +9,7 @@ import 'package:taxi/ui/see_location_page.dart';
 import 'package:taxi/ui/send_location_page.dart';
 import 'package:taxi/ui/send_mail_page.dart';
 import 'package:taxi/ui/time_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LatestPage extends StatefulWidget {
   const LatestPage({super.key});
@@ -122,7 +124,7 @@ class _LatestPageState extends State<LatestPage> {
                                       Container(
                                         margin: EdgeInsets.only(bottom: 10),
                                         child: Text(
-                                         products[currentIndex][1],
+                                          products[currentIndex][1],
                                           maxLines: 2,
                                           overflow: TextOverflow.ellipsis,
                                           textAlign: TextAlign.center,
@@ -151,7 +153,7 @@ class _LatestPageState extends State<LatestPage> {
                 ),
               ),
               Container(
-                height: 470,
+                height: 380,
                 child: Transform.translate(
                   offset: Offset(0, 0),
                   child: FadeAnimation(
@@ -201,8 +203,7 @@ class _LatestPageState extends State<LatestPage> {
                                   _container("7.png", "GOTO WEBSITE", {}),
                                   _container("8.png", "USEFUL LINKS",
                                       const TimePage()),
-                                  _container(
-                                      "9.png", "NEWS AND ANNOUNCEMENTS", () {}),
+                                  _container("9.png", "NEWS", () {}),
                                 ],
                               )
                             ],
@@ -229,38 +230,47 @@ class _LatestPageState extends State<LatestPage> {
   }
 
   Widget _container(icon, text, dynamic page) {
-    return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => page),
-      ),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
-        height: 110,
-        width: 110,
-        decoration: BoxDecoration(
-          color: Color.fromARGB(255, 230, 230, 230),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              text,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+    return ScreenUtilInit(
+        designSize: const Size(360, 690),
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => page),
             ),
-            Image.asset(
-              "assets/icon/" + icon,
-              scale: 2.7,
-            )
-          ],
-        ),
-      ),
-    );
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 5),
+              height: 90.h,
+              width: 90.w,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 230, 230, 230),
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    text,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.oswald(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.bold,
+                        height: 1),
+                  ),
+                  Image.asset(
+                    "assets/icon/" + icon,
+                    scale: 2.7,
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   List<Widget> _buildIndicator() {

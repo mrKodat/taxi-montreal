@@ -1,5 +1,14 @@
-import 'package:booking_calendar/booking_calendar.dart';
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_icons/flutter_icons.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:taxi/ui/widget/account_page.dart';
+import 'package:taxi/ui/widget/booking_detail.dart';
+import 'package:taxi/ui/widget/location_page.dart';
+import 'package:taxi/ui/widget/upload.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key});
@@ -8,95 +17,106 @@ class BookingPage extends StatefulWidget {
   State<BookingPage> createState() => _BookingPageState();
 }
 
+int _index = 0;
+
 class _BookingPageState extends State<BookingPage> {
-
- final now = DateTime.now();
-  late BookingService mockBookingService;
-
-  @override
-  void initState() {
-    super.initState();
-    // DateTime.now().startOfDay
-    // DateTime.now().endOfDay
-    mockBookingService = BookingService(
-        serviceName: 'Mock Service',
-        serviceDuration: 60,
-        bookingEnd: DateTime(now.year, now.month, now.day, 18, 0),
-        bookingStart: DateTime(now.year, now.month, now.day, 8, 0));
-  }
-
-  Stream<dynamic>? getBookingStreamMock(
-      {required DateTime end, required DateTime start}) {
-    return Stream.value([]);
-  }
-
-  Future<dynamic> uploadBookingMock(
-      {required BookingService newBooking}) async {
-    await Future.delayed(const Duration(seconds: 1));
-    converted.add(DateTimeRange(
-        start: newBooking.bookingStart, end: newBooking.bookingEnd));
-
-  }
-
-  List<DateTimeRange> converted = [];
-
-  List<DateTimeRange> convertStreamResultMock({required dynamic streamResult}) {
-    ///here you can parse the streamresult and convert to [List<DateTimeRange>]
-    ///take care this is only mock, so if you add today as disabledDays it will still be visible on the first load
-    ///disabledDays will properly work with real data
-    DateTime first = now;
-    DateTime second = now.add(const Duration(minutes: 55));
-    DateTime third = now.subtract(const Duration(minutes: 240));
-    DateTime fourth = now.subtract(const Duration(minutes: 500));
-    converted.add(
-        DateTimeRange(start: first, end: now.add(const Duration(minutes: 30))));
-    converted.add(DateTimeRange(
-        start: second, end: second.add(const Duration(minutes: 23))));
-    converted.add(DateTimeRange(
-        start: third, end: third.add(const Duration(minutes: 15))));
-    converted.add(DateTimeRange(
-        start: fourth, end: fourth.add(const Duration(minutes: 50))));
-    return converted;
-  }
-
-  List<DateTimeRange> generatePauseSlots() {
-    return [
-      DateTimeRange(
-          start: DateTime(now.year, now.month, now.day, 12, 0),
-          end: DateTime(now.year, now.month, now.day, 13, 0))
-    ];
-  }
-
-
+  var currentStep = 0;
   @override
   Widget build(BuildContext context) {
+    var mapData = HashMap<String, String>();
+    mapData["first_name"] = AccountPageState.controllerFirstName.text;
+    mapData["last_name"] = AccountPageState.controllerLastName.text;
+    mapData["phone"] = AccountPageState.phoneNumber.text;
+    mapData["type_of_car"] = BookingDetailState.controllerTypeOfCar.text;
+    mapData["passenger"] = BookingDetailState.controllerPassenger.text;
+    mapData["luggage"] = BookingDetailState.controllerLuggage.text;
+    mapData["car_seat"] = BookingDetailState.controllerCarSeat.text;
+    mapData["date"] = LocationDetailState.controllerDate.text;
+    mapData["time"] = LocationDetailState.controllerTime.text;
+    mapData["pick_up_location"] =
+        LocationDetailState.controllerPickUpLocation.text;
+    mapData["drop_of_location"] =
+        LocationDetailState.controllerDropOffLocation.text;
+
+    List<Step> steps = [
+      Step(
+        title: Text('Personal'),
+        content: AccountPage(),
+        state: currentStep == 0 ? StepState.editing : StepState.indexed,
+        isActive: true,
+      ),
+      Step(
+        title: Text('Location'),
+        content: LocationDetail(),
+        state: currentStep == 1 ? StepState.editing : StepState.indexed,
+        isActive: true,
+      ),
+      Step(
+        title: Text('Booking'),
+        content: BookingDetail(),
+        state: currentStep == 2 ? StepState.editing : StepState.indexed,
+        isActive: true,
+      ),
+    ];
     return Scaffold(
-      appBar: AppBar(title: const Text("Booking"),),
-  body: Center(
-            child: BookingCalendar(
-              bookedSlotTextStyle:
-                  const TextStyle(color: Colors.red, fontSize: 24),
-              availableSlotTextStyle:
-                  TextStyle(color: Colors.blue[900], fontSize: 24),
-              selectedSlotTextStyle: TextStyle(
-                  color: Colors.red[900],
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500),
-              bookingService: mockBookingService,
-              convertStreamResultToDateTimeRanges: convertStreamResultMock,
-              getBookingStream: getBookingStreamMock,
-              uploadBooking: uploadBookingMock,
-              pauseSlots: generatePauseSlots(),
-              pauseSlotText: 'LUNCH',
-              hideBreakTime: false,
-              loadingWidget: const Text('Fetching data...'),
-              uploadingWidget: const CircularProgressIndicator(),
-              locale: "en_US",
-              startingDayOfWeek: StartingDayOfWeek.tuesday,
-              disabledDays: const [7],
-            ),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Icon(
+            FlutterIcons.keyboard_backspace_mdi,
+            color: Color.fromRGBO(33, 45, 82, 1),
           ),
-        
-        );
+        ),
+        title: Text(
+          "BOOK NOW",
+          style: TextStyle(
+            color: Color.fromRGBO(33, 45, 82, 1),
+          ),
+        ),
+      ),
+      body: Container(
+        child: Stepper(
+          currentStep: this.currentStep,
+          steps: steps,
+          type: StepperType.horizontal,
+          onStepTapped: (step) {
+            setState(() {
+              currentStep = step;
+            });
+          },
+          onStepContinue: () {
+            setState(() {
+              if (currentStep < steps.length - 1) {
+                if (currentStep == 0 ||
+                    AccountPageState.formKey.currentState!.validate()) {
+                  currentStep = currentStep + 1;
+                } else if (currentStep == 1 ||
+                    LocationDetailState.formKey.currentState!.validate()) {
+                  currentStep = currentStep + 1;
+                } else if (currentStep == 1 ||
+                    BookingDetailState.formKey.currentState!.validate()) {
+                  currentStep = currentStep + 1;
+                }
+              } else {
+                currentStep = 0;
+              }
+            });
+          },
+          onStepCancel: () {
+            setState(() {
+              if (currentStep > 0) {
+                currentStep = currentStep - 1;
+              } else {
+                currentStep = 0;
+              }
+            });
+          },
+        ),
+      ),
+    );
   }
 }
