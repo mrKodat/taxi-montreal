@@ -70,7 +70,7 @@ class BookingDetailState extends State<BookingDetail> {
                   Icons.work,
                   color: Colors.grey,
                 ),
-                hintText: 'Luggage Count',
+                hintText: 'Luggage Coun',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),
